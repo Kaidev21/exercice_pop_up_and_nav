@@ -104,8 +104,14 @@ class _QuestionaireState extends State<Questionaire> {
             onPressed: () {
               Navigator.of(context).pop();
               setState((){
-                widget.numQuestion +=1;
+                if(widget.numQuestion < widget.datas.listeQuestions.length) {
+                  widget.numQuestion +=1;
+                }
               });
+              if(widget.numQuestion == widget.datas.listeQuestions.length) {
+                finPartie();
+                print("Fin de la partie");
+              }
             },
             child: Text("Passer à la question suivante"),
           )
@@ -122,7 +128,7 @@ class _QuestionaireState extends State<Questionaire> {
         Divider(),
         SimpleDialogOption(
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.pushNamed(context, '/');
             },
           child: Text("Retour"),
         )
@@ -145,8 +151,14 @@ class _QuestionaireState extends State<Questionaire> {
             onPressed: (){
               Navigator.of(context).pop();
               setState((){
-                widget.numQuestion +=1;
+                if(widget.numQuestion < widget.datas.listeQuestions.length) {
+                  widget.numQuestion +=1;
+                }
               });
+              if(widget.numQuestion == widget.datas.listeQuestions.length) {
+                finPartie();
+                print("Fin de la partie");
+              }
             },
             child: Text("Passer à la question suivante")
         )
