@@ -60,6 +60,7 @@ class _QuestionaireState extends State<Questionaire> {
                         onPressed: () {
                         setState((){
                           choix = false;
+                          verificationReponse(choixX: choix);
                         });
                         },
                         child: Text("FAUX")
@@ -70,7 +71,10 @@ class _QuestionaireState extends State<Questionaire> {
                             elevation: 10
                         ),
                         onPressed: () {
-                          choix = true;
+                          setState((){
+                            choix = true;
+                            verificationReponse(choixX: choix);
+                          });
                         },
                         child: Text("VRAI")
                     )
@@ -88,9 +92,9 @@ class _QuestionaireState extends State<Questionaire> {
     return question;
   }
 
-  Future<Widget> verification ({required bool choixX}) async{
-    if(choixX == getQuestion(widget.numQuestion - 1).reponse) {
-      final simple = SimpleDialog(
+  SimpleDialog reponseVraie() {
+    widget.score +=1;
+      return SimpleDialog(
         title: Text("C'est gagné !"),
         elevation: 15,
         children: [
@@ -99,19 +103,72 @@ class _QuestionaireState extends State<Questionaire> {
           SimpleDialogOption(
             onPressed: () {
               Navigator.of(context).pop();
-              widget.numQuestion +=1;
+              setState((){
+                widget.numQuestion +=1;
+              });
             },
+            child: Text("Passer à la question suivante"),
           )
         ],
       );
-      await showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext ctx) {
-            return simple;
-          }
-      );
-    }
-
   }
+
+  SimpleDialog finPartie() {
+    return SimpleDialog(
+      title: Text("Fin de la partie !"),
+      elevation: 15,
+      children: [
+        Text("Votre score est de ${widget.score}"),
+        Divider(),
+        SimpleDialogOption(
+          onPressed: () {
+            Navigator.of(context).pop();
+            },
+          child: Text("Retour"),
+        )
+      ],
+    );
+  }
+
+  AlertDialog reponseFausse() {
+    return AlertDialog(
+      title: Text("Raté !"),
+      content: Column(
+        children: [
+          Image.asset(
+              "images/faux.jpg"),
+          Text(getQuestion(widget.numQuestion - 1).explication)
+        ],
+      ),
+      actions: [
+        TextButton(
+            onPressed: (){
+              Navigator.of(context).pop();
+              setState((){
+                widget.numQuestion +=1;
+              });
+            },
+            child: Text("Passer à la question suivante")
+        )
+      ],
+    );
+  }
+
+  Future<void> showMyDialog({required Widget dialog}) async {
+    await showDialog(
+        context: context,
+        builder: (BuildContext ctx) {
+          return dialog;
+        }
+    );
+  }
+
+  void verificationReponse({required bool choixX}) {
+    if(choixX == getQuestion(widget.numQuestion - 1).reponse) {
+      showMyDialog(dialog: reponseVraie());
+    } else {
+      showMyDialog(dialog: reponseFausse());
+    }
+  }
+
 }
