@@ -109,8 +109,7 @@ class _QuestionaireState extends State<Questionaire> {
                 }
               });
               if(widget.numQuestion == widget.datas.listeQuestions.length) {
-                finPartie();
-                print("Fin de la partie");
+                showMyDialog(dialog: finPartie());
               }
             },
             child: Text("Passer à la question suivante"),
@@ -128,7 +127,8 @@ class _QuestionaireState extends State<Questionaire> {
         Divider(),
         SimpleDialogOption(
           onPressed: () {
-            Navigator.pushNamed(context, '/');
+            print("Fin de la partie");
+            Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
             },
           child: Text("Retour"),
         )
@@ -156,8 +156,7 @@ class _QuestionaireState extends State<Questionaire> {
                 }
               });
               if(widget.numQuestion == widget.datas.listeQuestions.length) {
-                finPartie();
-                print("Fin de la partie");
+                showMyDialog(dialog: finPartie());
               }
             },
             child: Text("Passer à la question suivante")

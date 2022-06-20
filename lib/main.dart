@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       ),
       home: const MyHomePage(title: 'Quizz Flutter'),
       routes: <String, WidgetBuilder> {
-        '/questionnaire': (BuildContext context) => Questionaire()
+        '/questionnaire': (BuildContext context) => Questionaire(),
       },
       debugShowCheckedModeBanner: false,
     );
